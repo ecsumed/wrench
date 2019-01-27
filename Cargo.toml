@@ -4,4 +4,10 @@ version = "0.1.0"
 authors = ["Fahad Saleh <ecsumed@yahoo.com>"]
 edition = "2018"
 
-[dependencies]
+
+[dependencies.clap]
+version = "2.32"
+default-features = false
+
+# Cherry-pick the features you'd like to use
+features = [ "suggestions", "color" ]

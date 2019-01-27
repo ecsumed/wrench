@@ -1,16 +1,15 @@
-mod bench;
+#![allow(dead_code)]
+#![allow(unused_variables)]
+#![allow(unused_imports)]
 
-fn add(x: i32, y: i32) -> i32 {
-    x + y
-}
+extern crate clap;
+
+mod bench;
+mod args;
 
 fn main() {
-    let x = 3;
-    let y = 5;
+	let (urls, threads, requests): (Vec<String>, usize, usize) = args::parse();
 
-    let (res, time) = bench::time_it(move || {
-        add(x, y)
-    });
-
-    println!("res {:?}, time {:?}", res, time)
+	println!("{}", threads);
+	println!("{}", requests);
 }
