@@ -1,26 +1,26 @@
 
-struct Plan{
+pub struct Plan{
     threads: usize,
     requests: usize,
 }
 
 impl Plan {
-    fn new(threads: usize, requests: usize) -> Plan {
+    pub fn new(threads: usize, requests: usize) -> Plan {
         Plan {
             threads,
             requests
         }
     }
 
-    fn threads(&self) -> usize {
+    pub fn threads(&self) -> usize {
         self.threads
     }
     
-    fn requests(&self) -> usize {
+    pub fn requests(&self) -> usize {
         self.requests
     }
 
-    fn distribute(&self) -> Vec<usize> {
+    pub fn distribute(&self) -> Vec<usize> {
         let work = self.requests / self.threads;
         let extra_work = self.requests % self.threads;
 

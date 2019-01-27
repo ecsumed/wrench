@@ -9,13 +9,13 @@ mod bench;
 mod args;
 mod plan;
 mod engine;
+mod runner;
 
 fn main() {
 	let (urls, threads, requests): (Vec<String>, usize, usize) = args::parse();
 
     let eng = engine::Engine::new(urls);
+    let plan = plan::Plan::new(threads, requests);
+    let runner = runner::Runner::start(plan, &eng);
 
-    eng.run(requests);
-	println!("{}", threads);
-	println!("{}", requests);
 }
