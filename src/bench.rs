@@ -11,7 +11,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_time_it() {
+    fn test_bench_time_it() {
         let (u, d) = time_it(|| 123);
         assert_eq!(u, 123);
         assert!(d > Duration::new(0,0);

@@ -19,8 +19,9 @@ fn main() -> Result<(), Box<std::error::Error>> {
         .default_headers(headers)
         .build()?;
 
-    let resp = client.get("http://phpstack-10392-383663.cloudwaysstagingapps.com")
-        .send()?.text()?;
-    println!("{:#?}", resp);
+    let resp = client.get("http://httpbin.org/status/404")
+        .send()?;
+    println!("{}", resp.status().as_u16());
+    println!("{:?}", resp.content_length());
     Ok(())
 }

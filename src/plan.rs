@@ -7,8 +7,8 @@ struct Plan{
 impl Plan {
     fn new(threads: usize, requests: usize) -> Plan {
         Plan {
-            threads: threads,
-            requests: requests
+            threads,
+            requests
         }
     }
 
