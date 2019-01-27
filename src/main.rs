@@ -6,6 +6,7 @@ extern crate clap;
 
 mod bench;
 mod args;
+mod plan;
 
 fn main() {
 	let (urls, threads, requests): (Vec<String>, usize, usize) = args::parse();
