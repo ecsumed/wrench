@@ -24,4 +24,12 @@ fn main() {
 
     let ((), duration) = bench::time_it(|| { runner.join() });
 
+    let seconds =
+        duration.as_secs() as f64 + (f64::from(duration.subsec_nanos()) / 1_000_000_000f64);
+
+    println!("Finished!");
+    println!();
+    println!("Took {} seconds", seconds);
+    println!("{} requests / second", requests as f64 / seconds);
+	println!();
 }
