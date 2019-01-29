@@ -1,10 +1,12 @@
 use super::bench;
 
+#[derive(Clone)]
 pub enum Method {
     Get,
     Head,
 }
 
+#[derive(Clone)]
 pub struct Engine {
     urls: Vec<String>,
     headers: Vec<String>,

@@ -12,14 +12,25 @@ impl Runner {
     pub fn start(plan: Plan, engine: &Engine) -> Runner {
         Runner {
             handles: plan.distribute()
-                     .iter()
-                     .map(|n|{
-                         thread::spawn(|| {
-                         engine.run(*n);
-                         })
-                     })
-                     .collect()
+                .into_iter()
+                .map(|requests| {
+                    let eng = engine.clone();
+                    print!(".");
+                    thread::spawn(move || Runner::run(requests, &eng))
+                })
+                .collect()
         }
     }
 
+    pub fn join(self) {
+        self.handles
+        .into_iter()
+        .for_each(|handle| {
+            handle.join().unwrap();
+        });
+    }
+
+    fn run(requests: usize, engine: &Engine) {
+        engine.run(requests);
+    }
 }
