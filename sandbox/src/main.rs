@@ -52,4 +52,11 @@ fn main() {
     }
 
     handle.join().unwrap();
+//=======
+//    let resp = client.get("http://httpbin.org/status/404")
+//        .send()?;
+//    println!("{}", resp.status().as_u16());
+//    println!("{:?}", resp.content_length());
+//    Ok(())
+//>>>>>>> ddf48e714fa81301837f89bcbd2b110910d53b07
 }

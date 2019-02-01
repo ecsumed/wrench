@@ -5,3 +5,11 @@ authors = ["Fahad Saleh <ecsumed@yahoo.com>"]
 edition = "2018"
 
 [dependencies]
+reqwest = "0.9.9"
+
+[dependencies.clap]
+version = "2.32"
+default-features = false
+
+# Cherry-pick the features you'd like to use
+features = [ "suggestions", "color" ]

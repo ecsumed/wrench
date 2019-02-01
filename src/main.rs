@@ -1,16 +1,35 @@
-mod bench;
+#![allow(dead_code)]
+#![allow(unused_variables)]
+#![allow(unused_imports)]
 
-fn add(x: i32, y: i32) -> i32 {
-    x + y
-}
+extern crate clap;
+extern crate reqwest;
+
+mod bench;
+mod args;
+mod plan;
+mod engine;
+mod runner;
+
+use crate::plan::Plan;
+use crate::engine::Engine;
+use crate::runner::Runner;
 
 fn main() {
-    let x = 3;
-    let y = 5;
+	let (urls, threads, requests): (Vec<String>, usize, usize) = args::parse();
 
-    let (res, time) = bench::time_it(move || {
-        add(x, y)
-    });
+    let eng = Engine::new(urls);
+    let plan = Plan::new(threads, requests);
+    let runner = Runner::start(plan, &eng);
 
-    println!("res {:?}, time {:?}", res, time)
+    let ((), duration) = bench::time_it(|| { runner.join() });
+
+    let seconds =
+        duration.as_secs() as f64 + (f64::from(duration.subsec_nanos()) / 1_000_000_000f64);
+
+    println!("Finished!");
+    println!();
+    println!("Took {} seconds", seconds);
+    println!("{} requests / second", requests as f64 / seconds);
+	println!();
 }
