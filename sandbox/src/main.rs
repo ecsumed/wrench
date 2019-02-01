@@ -1,26 +1,55 @@
 extern crate reqwest;
 
-// use std::collections::HashMap;
+use std::thread;
+use std::time::Duration;
 
-use reqwest::header;
+mod reciever {
+    use std::sync::mpsc;
+  
+    struct Messages<T,U> {
+        numbers: Vec<i32>, 
+        tx: T,
+        rx: U,
+    }
+    impl<T,U> Messages {
+        pub fn new() -> Messages {
+            let (tx, rx) = mpsc::channel();
+            Messages {
+                numbers: vec![],
+                tx: tx,
+                rx: rx
+            }
+        }
+
+        pub fn send(&self, num: i32) {
+            self.tx.send(num).unwrap();
+        }
+
+        pub fn recieve(&self, num: i32) {
+            for received in self.rx {
+                self.numbers.push(num);
+                println!("Got: {}", received);
+            }
+        }
+    }
 
 
+}
 
-fn main() -> Result<(), Box<std::error::Error>> {
-    let mut headers = header::HeaderMap::new();
-    //headers.insert(header::USER_AGENT, header::HeaderValue::from_static("randomtest"));
-   
-    let custom_header = header::HeaderName::from_static("user-agent");
+fn main() {
 
-    headers.insert(custom_header, header::HeaderValue::from_static("Chrome 1.0/"));
+    let channel = reciever::Messages::new();    
+    let handle = thread::spawn(|| {
+        for i in 1..10 {
+            println!("hi number {} from the spawned thread!", i);
+            thread::sleep(Duration::from_millis(1));
+        }
+    });
 
-    // get a client builder
-    let client = reqwest::Client::builder()
-        .default_headers(headers)
-        .build()?;
+    for i in 1..5 {
+        println!("hi number {} from the main thread!", i);
+        thread::sleep(Duration::from_millis(1));
+    }
 
-    let resp = client.get("http://phpstack-10392-383663.cloudwaysstagingapps.com")
-        .send()?.text()?;
-    println!("{:#?}", resp);
-    Ok(())
+    handle.join().unwrap();
 }
