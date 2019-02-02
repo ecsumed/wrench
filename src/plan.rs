@@ -1,4 +1,5 @@
 
+#[derive(Clone)]
 pub struct Plan{
     threads: usize,
     requests: usize,

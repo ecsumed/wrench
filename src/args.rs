@@ -1,6 +1,7 @@
 use clap::{Arg, App, SubCommand};
+use super::stats::ChartSize;
 
-pub fn parse() -> (Vec<String>, usize, usize) {
+pub fn parse() -> (Vec<String>, usize, usize, ChartSize) {
     let matches = App::new("Wrench benchmarker.")
                           .version("1.0")
                           .author("Fahad S. <ecsumed@yahoo.com>")
@@ -17,6 +18,11 @@ pub fn parse() -> (Vec<String>, usize, usize) {
                                .default_value("1")
                                .help("Number of total requests.")
                                .takes_value(true))
+                          .arg(Arg::with_name("chart-size")
+                               .long("chart-size")
+                               .takes_value(true)
+                               .possible_values(&["none", "n", "small", "s", "medium", "m", "large", "l"])
+                               .help("The size of the chart to render"))
                           .arg(Arg::with_name("URLs")
                                .multiple(true)
                                .required(true)
@@ -41,5 +47,13 @@ pub fn parse() -> (Vec<String>, usize, usize) {
         .parse::<usize>()
         .expect("Expected valid number for number of requests");
 
-    (urls, threads, requests)
+    let chart_size = match matches.value_of("chart-size").unwrap_or("medium") {
+        "none" | "n" => ChartSize::None,
+        "small" | "s" => ChartSize::Small,
+        "medium" | "m" => ChartSize::Medium,
+        "large" | "l" => ChartSize::Large,
+        _ => unreachable!(),
+    };
+
+    (urls, threads, requests, chart_size)
 }

@@ -1,4 +1,6 @@
 use super::bench;
+use super::stats::Fact;
+use super::content_length::ContentLength;
 
 #[derive(Clone)]
 pub enum Method {
@@ -27,12 +29,17 @@ impl Engine {
         self
     }
 
-    pub fn run(&self, requests: usize) {
-        self.run_reqwest(requests); 
+    pub fn run<F>(&self, requests: usize, collect: F)
+    where
+        F: FnMut(Fact),
+    {
+        self.run_reqwest(requests, collect); 
     }
 
-
-	fn run_reqwest(&self, requests: usize) {
+	fn run_reqwest<F>(&self, requests: usize, mut collect: F)
+    where
+        F: FnMut(Fact),
+    {
         use reqwest::header;
         use reqwest::{Client, Request};
 
@@ -74,7 +81,11 @@ impl Engine {
                 resp
             });
 
-            println!("status: {} bench: {:?}",resp.status().as_u16(), duration)
+            collect(Fact::record(
+                resp.status().as_u16(),
+                duration,
+                ContentLength::new(len as u64),
+            ));
         }
         
     }
