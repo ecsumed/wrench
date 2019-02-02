@@ -10,6 +10,8 @@ mod args;
 mod plan;
 mod engine;
 mod runner;
+mod message;
+mod collector;
 
 use crate::plan::Plan;
 use crate::engine::Engine;
