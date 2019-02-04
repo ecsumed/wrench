@@ -1,3 +1,27 @@
+/// Plan and distribute requests.
+///
+/// Plan holds the requests and threads of a run.
+/// It uses the 'distribute' function to spread out the
+/// requests between threads.
+///
+/// # Example
+///
+/// ```rust
+/// let plan = Plan::new(3, 100)
+/// assert_eq!(plan.distribute(), [34, 33, 33]);
+
+/// let plan = Plan::new(5, 3)
+/// assert_eq!(plan.distribute(), [1, 1, 1]);
+/// ```
+///
+/// # Panics
+///
+/// ```rust
+/// let plan = Plan::new(5, 3)
+/// assert_eq!(plan.distribute(), [1, 1, 1, 0, 0]);
+/// ```
+///
+
 
 #[derive(Clone)]
 pub struct Plan{
