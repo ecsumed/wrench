@@ -14,8 +14,7 @@ mod tests {
     fn test_bench_time_it() {
         let (u, d) = time_it(|| 123);
         assert_eq!(u, 123);
-        assert!(d > Duration::new(0,0);
-        )
+        assert!(d > Duration::new(0,0));
     }
 
 }
